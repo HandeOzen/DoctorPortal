@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<SharedResource> localizer;
+@{
+    ApplicationUser myUser = (await UserManager.GetUserAsync(User));
+
+}
+@if (SignInManager.IsSignedIn(User))
+{
+
+
+    if (User.IsInRole("Admin"))
+    {
+        <li>
+            <a asp-area="" asp-controller="Admin" asp-action="AdminPage">
+                <i class="fas fa-prescription-bottle"></i>
+                <p>Admin</p>
+            </a>
+        </li>
+
+        <li>
+            <a asp-area="" asp-controller="Admin" asp-action="CreateSpeciality">
+                <i class="fas fa-prescription-bottle"></i>
+                <p>Branş Ekle</p>
+            </a>
+        </li>
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <i class="fas fa-sign-out-alt"></i>
+                <p>@localizer["LogoutText"]</p>
+            </a>
+        </li>
+    }
+    if (User.IsInRole("Patient"))
+    {
+        <li class="">
+            <a asp-area="" asp-controller="Patient" asp-action="Index">
+                <i class="far fa-user"></i>
+                <p>@localizer["Profile"]</p>
+            </a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Patient" asp-action="AppointmentPage">
+                <i class="far fa-calendar-check"></i>
+                <p>@localizer["Appointment"]</p>
+            </a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Patient" asp-action="PrescriptionPage">
+                <i class="fas fa-prescription-bottle"></i>
+                <p>@localizer["Prescription"]</p>
+            </a>
+        </li>
+        <li>
+
+            <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <i class="fas fa-sign-out-alt"></i>
+                <p>@localizer["LogoutText"]</p>
+            </a>
+        </li>
+
+    }
+    if (User.IsInRole("Doctor"))
+    {
+
+        <li>
+            <a asp-area="" asp-controller="Doctor" asp-action="AppointmentPage">
+                <i class="far fa-calendar-check"></i>
+                <p>Randevular</p>
+            </a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Doctor" asp-action="PrescriptionPage">
+                <i class="fas fa-prescription-bottle"></i>
+                <p>Reçeteler</p>
+            </a>
+        </li>
+        <li>
+
+            <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <i class="fas fa-sign-out-alt"></i>
+                <p>@localizer["LogoutText"]</p>
+            </a>
+        </li>
+    }
+}
